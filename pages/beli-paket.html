@@ -3,13 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment - Beli Paket</title>
+    <title>Beli Paket - Payment</title>
     
-     <!-- CSS Files -->
+    <!-- CSS Files -->
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/dashboard.css">
-
+    
+    <style>
+        .page-header {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .package-section {
+            margin-bottom: 48px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #1f2937;
+            margin-bottom: 32px;
+        }
+        
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .package-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .package-card.free {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+        }
+        
+        .package-card.explorer {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+        }
+        
+        .package-card.achiever {
+            background: linear-gradient(135deg, #ec4899, #f472b6);
+            color: white;
+        }
+        
+        .package-card.champion {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+        
+        .package-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+        
+        .package-badge.popular {
+            background: rgba(255, 215, 0, 0.9);
+            color: #1f2937;
+        }
+        
+        .package-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .package-desc {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            min-height: 36px;
+        }
+        
+        .package-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px 0;
+        }
+        
+        .package-features li {
+            font-size: 13px;
+            margin-bottom: 10px;
+            opacity: 0.95;
+            padding-left: 4px;
+        }
+        
+        .package-price-strike {
+            text-decoration: line-through;
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+        
+        .package-price {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .btn-package {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #7c3aed;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-package:hover {
+            background: white;
+            transform: scale(1.02);
+        }
+        
+        .package-card.free .btn-package {
+            background: rgba(255, 255, 255, 0.95);
+            color: #7c3aed;
+        }
+        
+        .package-card.achiever .btn-package {
+            color: #ec4899;
+        }
+        
+        .package-card.champion .btn-package {
+            color: #6366f1;
+        }
+        
+        /* Heart Top Up Styles */
+        .topup-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        
+        .topup-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .topup-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .topup-card.purple {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+        }
+        
+        .topup-card.pink {
+            background: linear-gradient(135deg, #ec4899, #f472b6);
+        }
+        
+        .topup-card.purple-light {
+            background: linear-gradient(135deg, #a855f7, #c084fc);
+        }
+        
+        .topup-header {
+            margin-bottom: 24px;
+        }
+        
+        .topup-label {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white;
+        }
+        
+        .topup-icon {
+            font-size: 48px;
+            margin: 24px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            min-height: 60px;
+        }
+        
+        .topup-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 24px;
+        }
+        
+        .topup-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .btn-topup {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #7c3aed;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-topup:hover {
+            background: white;
+            transform: scale(1.02);
+        }
+        
+        .topup-card.pink .btn-topup {
+            color: #ec4899;
+        }
+        
+        .validity {
+            font-size: 12px;
+            color: white;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 1200px) {
+            .package-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .package-grid,
+            .topup-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -19,200 +291,239 @@
                 <div class="logo-section">
                     <div class="logo">
                         <div class="logo-outer">
-                            <div class="logo-inner">
-                                <span>H</span>
-                            </div>
+                            <div class="logo-inner"></div>
                         </div>
+                        <div class="logo-sparkle">✦</div>
+                    </div>
+                    <div class="bell-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
                     </div>
                 </div>
+
+                <button class="toggle-btn" onclick="toggleSidebar()">
+                    <div class="toggle-line"></div>
+                    <svg id="toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <div class="toggle-line"></div>
+                </button>
             </div>
 
-            <nav class="sidebar-menu">
-                <a href="index.html" class="menu-item">
-                    <i class="icon">📊</i>
-                    <span>Dashboard</span>
+            <nav class="menu">
+                <a href="../index.html" class="menu-item">
+                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <span class="menu-label">Dashboard</span>
                 </a>
+
                 <a href="tryout-saya.html" class="menu-item">
-                    <i class="icon">📝</i>
-                    <span>TryOut Saya</span>
+                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    <span class="menu-label">TryOut Saya</span>
                 </a>
+
                 <a href="event-saya.html" class="menu-item">
-                    <i class="icon">🎯</i>
-                    <span>Event Saya</span>
+                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span class="menu-label">Event Saya</span>
                 </a>
+
                 <a href="ruang-curhat.html" class="menu-item">
-                    <i class="icon">💬</i>
-                    <span>Ruang Curhat</span>
+                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span class="menu-label">Ruang Curhat</span>
                 </a>
+
                 <a href="beli-paket.html" class="menu-item active">
-                    <i class="icon">🛍️</i>
-                    <span>Beli Paket</span>
+                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    <span class="menu-label">Beli Paket</span>
+                    <span class="active-dot"></span>
                 </a>
-                <a href="#" class="menu-item">
-                    <i class="icon">📜</i>
-                    <span>Riwayat</span>
+
+                <a href="riwayat.html" class="menu-item">
+                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span class="menu-label">Riwayat</span>
                 </a>
             </nav>
 
-            <div class="sidebar-profile">
-                <img src="https://via.placeholder.com/40" alt="Profile">
+            <div class="profile-section">
                 <div class="profile-info">
-                    <div class="profile-name">Bagas Purnomo</div>
-                    <div class="profile-role">Admin Sekolah</div>
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Bagas" alt="Profile" class="profile-avatar">
+                    <div class="profile-details">
+                        <div class="profile-name">Bagas Putranto</div>
+                        <div class="profile-role">Current Partner</div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="sidebar-illustration">
-                <img src="https://via.placeholder.com/120x100" alt="Illustration">
+                <div class="book-illustration"></div>
             </div>
         </aside>
 
         <!-- MAIN CONTENT -->
         <main class="main-content">
-            <header class="top-header">
-                <div class="header-left">
-                    <h1>Payment</h1>
-                </div>
-            </header>
+            <!-- Header -->
+            <div class="page-header">
+                <h1>Payment</h1>
+            </div>
 
-            <div class="payment-section">
-                <!-- Tryout Package Section -->
-                <div class="package-category">
-                    <h2 class="category-title">TRYOUT PACKAGE</h2>
-                    <div class="package-grid">
-                        <!-- Free Package -->
-                        <div class="package-card free">
-                            <div class="package-badge">FREE</div>
-                            <h3 class="package-name">Free</h3>
-                            <p class="package-desc">Hemat, tidak mengurangi uang</p>
-                            <ul class="package-features">
-                                <li>✓ Akses TryOut UTBK</li>
-                                <li>✓ Full Rekaman audio</li>
-                                <li>✓ Video Edukasi lengkap</li>
-                                <li>✓ Latihan & Assessment Soal</li>
-                                <li>✓ Kumpulan Rumus lengkap</li>
-                                <li>✓ Akses Ruang Curhat</li>
-                            </ul>
-                            <div class="package-price">Rp0,-</div>
-                            <button class="btn-package">FREE SELAMANYA</button>
-                        </div>
+            <!-- Tryout Package Section -->
+            <div class="package-section">
+                <h2 class="section-title">TRYOUT PACKAGE</h2>
+                <div class="package-grid">
+                    <!-- Free Package -->
+                    <div class="package-card free">
+                        <div class="package-badge">FREE</div>
+                        <h3 class="package-name">Free</h3>
+                        <p class="package-desc">Hemat, tidak mengurangi uang</p>
+                        <ul class="package-features">
+                            <li>✓ Akses TryOut UTBK</li>
+                            <li>✓ Full Rekaman audio</li>
+                            <li>✓ Video Edukasi lengkap</li>
+                            <li>✓ Latihan & Assessment Soal</li>
+                            <li>✓ Kumpulan Rumus lengkap</li>
+                            <li>✓ Akses Ruang Curhat</li>
+                        </ul>
+                        <div class="package-price">Rp0,-</div>
+                        <button class="btn-package">FREE SELAMANYA</button>
+                    </div>
 
-                        <!-- Explorer Package -->
-                        <div class="package-card explorer">
-                            <div class="package-badge">EXPLORER</div>
-                            <h3 class="package-name">Explorer</h3>
-                            <p class="package-desc">Anda bisa mengikuti lebih dari 10</p>
-                            <ul class="package-features">
-                                <li>✓ Akses TryOut UTBK</li>
-                                <li>✓ Full Rekaman audio</li>
-                                <li>✓ Video Edukasi lengkap</li>
-                                <li>✓ Latihan & Assessment Soal</li>
-                                <li>✓ Kumpulan Rumus lengkap</li>
-                                <li>✓ Akses Ruang Curhat</li>
-                            </ul>
-                            <div class="package-price-strike">Rp20.000,-</div>
-                            <div class="package-price">Rp15.000,-</div>
-                            <button class="btn-package">BELI SEKARANG</button>
-                        </div>
+                    <!-- Explorer Package -->
+                    <div class="package-card explorer">
+                        <div class="package-badge">EXPLORER</div>
+                        <h3 class="package-name">Explorer</h3>
+                        <p class="package-desc">Anda bisa mengikuti lebih dari 10</p>
+                        <ul class="package-features">
+                            <li>✓ Akses TryOut UTBK</li>
+                            <li>✓ Full Rekaman audio</li>
+                            <li>✓ Video Edukasi lengkap</li>
+                            <li>✓ Latihan & Assessment Soal</li>
+                            <li>✓ Kumpulan Rumus lengkap</li>
+                            <li>✓ Akses Ruang Curhat</li>
+                        </ul>
+                        <div class="package-price-strike">Rp20.000,-</div>
+                        <div class="package-price">Rp15.000,-</div>
+                        <button class="btn-package">BELI SEKARANG</button>
+                    </div>
 
-                        <!-- Achiever Package -->
-                        <div class="package-card achiever">
-                            <div class="package-badge popular">ACHIEVER ⭐</div>
-                            <h3 class="package-name">Achiever</h3>
-                            <p class="package-desc">Terlaris via IOS (Apple)</p>
-                            <ul class="package-features">
-                                <li>✓ Akses TryOut UTBK</li>
-                                <li>✓ Full Rekaman audio</li>
-                                <li>✓ Video Edukasi lengkap</li>
-                                <li>✓ Latihan & Assessment Soal</li>
-                                <li>✓ Kumpulan Rumus lengkap</li>
-                                <li>✓ Akses Ruang Curhat</li>
-                            </ul>
-                            <div class="package-price-strike">Rp50.000,-</div>
-                            <div class="package-price">Rp35.000,-</div>
-                            <button class="btn-package">BELI SEKARANG</button>
-                        </div>
+                    <!-- Achiever Package -->
+                    <div class="package-card achiever">
+                        <div class="package-badge popular">ACHIEVER ⭐</div>
+                        <h3 class="package-name">Achiever</h3>
+                        <p class="package-desc">Terlaris via IOS (Apple)</p>
+                        <ul class="package-features">
+                            <li>✓ Akses TryOut UTBK</li>
+                            <li>✓ Full Rekaman audio</li>
+                            <li>✓ Video Edukasi lengkap</li>
+                            <li>✓ Latihan & Assessment Soal</li>
+                            <li>✓ Kumpulan Rumus lengkap</li>
+                            <li>✓ Akses Ruang Curhat</li>
+                        </ul>
+                        <div class="package-price-strike">Rp50.000,-</div>
+                        <div class="package-price">Rp35.000,-</div>
+                        <button class="btn-package">BELI SEKARANG</button>
+                    </div>
 
-                        <!-- Champion Package -->
-                        <div class="package-card champion">
-                            <div class="package-badge">CHAMPION</div>
-                            <h3 class="package-name">Champion</h3>
-                            <p class="package-desc">✓ Paling lengkap + trial kelas</p>
-                            <ul class="package-features">
-                                <li>✓ Akses TryOut UTBK</li>
-                                <li>✓ Full Rekaman audio</li>
-                                <li>✓ Video Edukasi lengkap</li>
-                                <li>✓ Latihan & Assessment Soal</li>
-                                <li>✓ Kumpulan Rumus lengkap</li>
-                                <li>✓ Akses Ruang Curhat</li>
-                            </ul>
-                            <div class="package-price-strike">Rp80.000,-</div>
-                            <div class="package-price">Rp50.000,-</div>
-                            <button class="btn-package">BELI SEKARANG</button>
-                        </div>
+                    <!-- Champion Package -->
+                    <div class="package-card champion">
+                        <div class="package-badge">CHAMPION</div>
+                        <h3 class="package-name">Champion</h3>
+                        <p class="package-desc">✓ Paling lengkap + trial kelas</p>
+                        <ul class="package-features">
+                            <li>✓ Akses TryOut UTBK</li>
+                            <li>✓ Full Rekaman audio</li>
+                            <li>✓ Video Edukasi lengkap</li>
+                            <li>✓ Latihan & Assessment Soal</li>
+                            <li>✓ Kumpulan Rumus lengkap</li>
+                            <li>✓ Akses Ruang Curhat</li>
+                        </ul>
+                        <div class="package-price-strike">Rp80.000,-</div>
+                        <div class="package-price">Rp50.000,-</div>
+                        <button class="btn-package">BELI SEKARANG</button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Heart Top Up Section -->
-                <div class="package-category">
-                    <h2 class="category-title">HEART TOP UP</h2>
-                    <div class="topup-grid">
-                        <!-- 1 Heart -->
-                        <div class="topup-card purple">
-                            <div class="topup-header">
-                                <span class="topup-label">YOUR UP 1 HEART</span>
-                            </div>
-                            <div class="topup-icon">
-                                <span class="heart">💜</span>
-                            </div>
-                            <div class="topup-price">Rp5.000,-</div>
-                            <div class="topup-footer">
-                                <button class="btn-topup">BELI SEKARANG</button>
-                                <span class="validity">Masa aktif: 30hr</span>
-                            </div>
+            <!-- Heart Top Up Section -->
+            <div class="package-section">
+                <h2 class="section-title">HEART TOP UP</h2>
+                <div class="topup-grid">
+                    <!-- 1 Heart -->
+                    <div class="topup-card purple">
+                        <div class="topup-header">
+                            <span class="topup-label">YOUR UP 1 HEART</span>
                         </div>
-
-                        <!-- 3 Hearts -->
-                        <div class="topup-card pink">
-                            <div class="topup-header">
-                                <span class="topup-label">YOUR UP 3 HEARTS</span>
-                            </div>
-                            <div class="topup-icon">
-                                <span class="heart">💗</span>
-                                <span class="heart">💗</span>
-                                <span class="heart">💗</span>
-                            </div>
-                            <div class="topup-price">Rp12.000,-</div>
-                            <div class="topup-footer">
-                                <button class="btn-topup">BELI SEKARANG</button>
-                                <span class="validity">Masa aktif: 90hr</span>
-                            </div>
+                        <div class="topup-icon">
+                            <span class="heart">💜</span>
                         </div>
+                        <div class="topup-price">Rp5.000,-</div>
+                        <div class="topup-footer">
+                            <button class="btn-topup">BELI SEKARANG</button>
+                            <span class="validity">Masa aktif: 30hr</span>
+                        </div>
+                    </div>
 
-                        <!-- 5 Hearts -->
-                        <div class="topup-card purple-light">
-                            <div class="topup-header">
-                                <span class="topup-label">YOUR UP 5 HEARTS</span>
-                            </div>
-                            <div class="topup-icon">
-                                <span class="heart">💜</span>
-                                <span class="heart">💜</span>
-                                <span class="heart">💜</span>
-                                <span class="heart">💜</span>
-                                <span class="heart">💜</span>
-                            </div>
-                            <div class="topup-price">Rp15.000,-</div>
-                            <div class="topup-footer">
-                                <button class="btn-topup">BELI SEKARANG</button>
-                                <span class="validity">Masa aktif: 90hr</span>
-                            </div>
+                    <!-- 3 Hearts -->
+                    <div class="topup-card pink">
+                        <div class="topup-header">
+                            <span class="topup-label">YOUR UP 3 HEARTS</span>
+                        </div>
+                        <div class="topup-icon">
+                            <span class="heart">💗</span>
+                            <span class="heart">💗</span>
+                            <span class="heart">💗</span>
+                        </div>
+                        <div class="topup-price">Rp12.000,-</div>
+                        <div class="topup-footer">
+                            <button class="btn-topup">BELI SEKARANG</button>
+                            <span class="validity">Masa aktif: 90hr</span>
+                        </div>
+                    </div>
+
+                    <!-- 5 Hearts -->
+                    <div class="topup-card purple-light">
+                        <div class="topup-header">
+                            <span class="topup-label">YOUR UP 5 HEARTS</span>
+                        </div>
+                        <div class="topup-icon">
+                            <span class="heart">💜</span>
+                            <span class="heart">💜</span>
+                            <span class="heart">💜</span>
+                            <span class="heart">💜</span>
+                            <span class="heart">💜</span>
+                        </div>
+                        <div class="topup-price">Rp15.000,-</div>
+                        <div class="topup-footer">
+                            <button class="btn-topup">BELI SEKARANG</button>
+                            <span class="validity">Masa aktif: 90hr</span>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-<!-- JavaScript -->
+
+    <!-- JavaScript -->
     <script src="../js/script.js"></script>
 </body>
 </html>
